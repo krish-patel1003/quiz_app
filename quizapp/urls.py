@@ -19,6 +19,9 @@ from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf import settings
+from django.conf.urls.static import static
+from quizapp.views import *
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -34,7 +37,12 @@ schema_view = get_schema_view(
 )
 
 
+
 urlpatterns = [
+    path('', landing_page, name="landing_page"),
+    path('login/', login_page, name="login"),
+    path('register/', register_page, name="register"),
+    path('start-quiz/', quiz_page, name="quiz"),
     path('admin/', admin.site.urls),
     path('accounts/',include('accounts.urls')),
     path('quiz/', include('quiz.urls'))
@@ -46,3 +54,7 @@ urlpatterns += [
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
+
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)   
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

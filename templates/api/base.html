@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .option {
+            display: block;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .option:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Quiz App</h1>
+        
+        <div id="quiz-section">
+            <p id="question-text"></p>
+            <div id="options"></div>
+        </div>
+
+        <button id="start-quiz">Start Quiz</button>
+        <button id="get-results" disabled>Get Results</button>
+    </div>
+
+    <script>
+        const apiBaseUrl = 'http://localhost:8000';  // Base URL for API
+
+        document.getElementById('start-quiz').addEventListener('click', startQuiz);
+        document.getElementById('get-results').addEventListener('click', getResults);
+
+        async function startQuiz() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/quiz/quiz-sesion`, { method: 'POST' });
+                const data = await response.json();
+                localStorage.setItem('session_uid', data.uid);
+                document.getElementById('get-results').disabled = false;
+                getQuestion(data.uid);
+            } catch (error) {
+                console.error('Error starting quiz:', error);
+            }
+        }
+
+        async function getQuestion(session_uid) {
+            try {
+                const response = await fetch(`${apiBaseUrl}/quiz/quiz-session/${session_uid}`);
+                const data = await response.json();
+                displayQuestion(data.questions[0]);
+            } catch (error) {
+                console.error('Error fetching question:', error);
+            }
+        }
+
+        function displayQuestion(question) {
+            document.getElementById('question-text').innerText = question.question_text;
+            const options = document.getElementById('options');
+            options.innerHTML = `
+                <div class="option" onclick="submitAnswer('${question.uid}', 'A')">${question.option_a}</div>
+                <div class="option" onclick="submitAnswer('${question.uid}', 'B')">${question.option_b}</div>
+                <div class="option" onclick="submitAnswer('${question.uid}', 'C')">${question.option_c}</div>
+                <div class="option" onclick="submitAnswer('${question.uid}', 'D')">${question.option_d}</div>
+            `;
+        }
+
+        async function submitAnswer(question_uid, response) {
+            try {
+                const session_uid = localStorage.getItem('session_uid');
+                const data = {
+                    question: { uid: question_uid },
+                    user_response: response
+                };
+                const response = await fetch(`${apiBaseUrl}/quiz/attempt`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                console.log('Answer submitted:', result);
+            } catch (error) {
+                console.error('Error submitting answer:', error);
+            }
+        }
+
+        async function getResults() {
+            try {
+                const session_uid = localStorage.getItem('session_uid');
+                const response = await fetch(`${apiBaseUrl}/quiz/user-result`, { method: 'GET', body: JSON.stringify({ session_uid }) });
+                const data = await response.json();
+                console.log('Quiz results:', data);
+            } catch (error) {
+                console.error('Error fetching results:', error);
+            }
+        }
+    </script>
+
+</body>
+</html>

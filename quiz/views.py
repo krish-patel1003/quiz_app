@@ -34,6 +34,7 @@ class QuestionListView(GenericAPIView):
     serializer_class = QuestionSerializer
     
     def get(self, request):
+        session_uid = request.data.get("session_uid")
         questions = Question.objects.all()
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

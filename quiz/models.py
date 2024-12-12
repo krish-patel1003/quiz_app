@@ -67,9 +67,10 @@ class QuizSessionQuestion(BaseAbstract):
 
     @staticmethod
     def get_questions_for_session(quiz_session):
-        print(f"Querying QuizSessionQuestion for session: {quiz_session.uid}")
-        session_questions = QuizSessionQuestion.objects.filter(quiz_session_id=quiz_session).select_related("question").values("question")
-        return session_questions
+        session_questions = QuizSessionQuestion.objects.filter(quiz_session_id=quiz_session).select_related("question")
+        question_queryset = session_questions.values_list('question', flat=True)  # Get just the 'question' field
+        questions = Question.objects.filter(uid__in=question_queryset)  # Filter actual Question objects
+        return questions
         
 
 class UserAttempt(BaseAbstract):

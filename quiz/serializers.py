@@ -3,7 +3,7 @@ from quiz.models import *
 from accounts.models import *
 
 
-class QuestionSerializer(serializers.Serializer):
+class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ['uid', 'question_text', 'option_a', 'option_b', 'option_c', 'option_d', 'answer']
@@ -17,7 +17,9 @@ class QuizSessionSerializer(serializers.ModelSerializer):
 
     def get_questions(self, obj):
         questions = QuizSessionQuestion.get_questions_for_session(obj)
-        return questions
+        print(questions)
+        return QuestionSerializer(instance=questions, many=True).data
+
     
 class UserAttemptSerializer(serializers.ModelSerializer):
     question = QuestionSerializer()

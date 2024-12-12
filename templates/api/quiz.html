@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 600px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .option {
+            display: block;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .option:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Quiz Session</h1>
+        <div id="quiz-section">
+            <p id="question-text"></p>
+            <div id="options"></div>
+        </div>
+        <button id="next-question" style="display: none;">Next Question</button>
+        <p id="result" style="display: none;">Results:</p>
+    </div>
+
+    <script>
+        const apiBaseUrl = 'http://localhost:8000';  // Base URL for API
+        let currentQuestionIndex = 0;
+
+        async function startQuiz() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`${apiBaseUrl}/quiz/quiz-session/`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Token ${token}` }
+                });
+                console.log("hello", response.json())
+                const data = await response.json();
+                loadQuestion(data.questions[currentQuestionIndex]);
+            } catch (error) {
+                console.error('Error starting quiz:', error);
+            }
+        }
+
+        async function loadQuestion(question) {
+            document.getElementById('question-text').innerText = question.question_text;
+            const options = document.getElementById('options');
+            options.innerHTML = `
+                <div class="option" onclick="submitAnswer('${question.uid}', 'A')">${question.option_a}</div>
+                <div class="option" onclick="submitAnswer('${question.uid}', 'B')">${question.option_b}</div>
+                <div class="option" onclick="submitAnswer('${question.uid}', 'C')">${question.option_c}</div>
+                <div class="option" onclick="submitAnswer('${question.uid}', 'D')">${question.option_d}</div>
+            `;
+            document.getElementById('next-question').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        async function submitAnswer(question_uid, response) {
+            const token = localStorage.getItem('token');
+            try {
+                const data = {
+                    question: { uid: question_uid },
+                    user_response: response
+                };
+                await fetch(`${apiBaseUrl}/quiz/attempt`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            } catch (error) {
+                console.error('Error submitting answer:', error);
+            }
+        }
+
+        async function loadResults() {
+            const token = localStorage.getItem('token');
+            try {
+                const session_uid = localStorage.getItem('session_uid');
+                const response = await fetch(`${apiBaseUrl}/quiz/user-result`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Token ${token}` },
+                    body: JSON.stringify({ session_uid })
+                });
+                const data = await response.json();
+                document.getElementById('result').innerText = `
+                    Total Questions: ${data.total_questions}, 
+                    Correct Answers: ${data.questions_answered_correct}, 
+                    Incorrect Answers: ${data.questions_answered_wrong}
+                `;
+                document.getElementById('result').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading results:', error);
+            }
+        }
+
+        // Start Quiz
+        startQuiz();
+    </script>
+
+</body>
+</html>
