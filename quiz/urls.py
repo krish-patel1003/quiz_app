@@ -6,5 +6,4 @@ urlpatterns = [
     path('list-quiz-questions/', QuestionListView.as_view(), name="list-quiz-questions"),
     path('attempt/', UserAttemptView.as_view(), name='attempt'),
     path('user-result/', UserResultView.as_view(), name='user-result')
-
 ]

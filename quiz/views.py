@@ -35,9 +35,9 @@ class QuestionListView(GenericAPIView):
     
     def get(self, request):
         session_uid = request.data.get("session_uid")
-        questions = Question.objects.all()
-        serializer = QuestionSerializer(questions, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        session = QuizSession.objects.get(uid=session_uid)
+        questions = QuizSessionQuestion.get_questions_for_session(session)
+        return Response(QuestionSerializer(instance=questions, many=True).data, status=status.HTTP_200_OK)
     
 class UserAttemptView(GenericAPIView):
 
@@ -53,6 +53,16 @@ class UserAttemptView(GenericAPIView):
 class UserResultView(GenericAPIView):
 
     serializer_class = UserResultSerializer
+
+    def post(self, request):    
+        print("here")
+        session_uid = request.data.get("session_uid")
+        session = QuizSession.objects.get(uid=session_uid)
+        result = UserResult.objects.create(quiz_session_id=session)
+        result.evaluate_attempt()
+        result.save()
+        serializer = UserResultSerializer(result)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get(self, request):
         try:

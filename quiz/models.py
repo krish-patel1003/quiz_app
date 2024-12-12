@@ -80,6 +80,9 @@ class UserAttempt(BaseAbstract):
     user_response = models.CharField(max_length=1, null=False, blank=False, choices=OPTION_CHOICE)
     is_correct = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = ("quiz_session_id", "question_id")
+
     def check_answer(self):
         return self.user_response == self.question_id.answer
     
@@ -90,13 +93,14 @@ class UserAttempt(BaseAbstract):
 class UserResult(BaseAbstract):
 
     quiz_session_id = models.ForeignKey(QuizSession, null=False, on_delete=models.CASCADE)
-    total_questions = models.IntegerField()
-    questions_answered_wrong = models.IntegerField()
-    questions_answered_correct = models.IntegerField()
+    total_questions = models.IntegerField(null=True)
+    questions_answered_wrong = models.IntegerField(null=True)
+    questions_answered_correct = models.IntegerField(null=True)
 
     def get_quiz_question_list(self):
         questions = UserAttempt.objects.filter(quiz_session_id=self.quiz_session_id).values('question_id')
-        return Question.objects.filter(id__in=[q['question_id'] for q in questions])
+        print("---->", questions)
+        return Question.objects.filter(id__in=[i for i in questions.values_list('uid', flat=True)])
 
     def get_questions_answered_correct(self):
         return UserAttempt.objects.filter(quiz_session_id=self.quiz_session_id, is_correct=True).count()

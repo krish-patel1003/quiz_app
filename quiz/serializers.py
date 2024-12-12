@@ -17,24 +17,25 @@ class QuizSessionSerializer(serializers.ModelSerializer):
 
     def get_questions(self, obj):
         questions = QuizSessionQuestion.get_questions_for_session(obj)
-        print(questions)
         return QuestionSerializer(instance=questions, many=True).data
 
     
 class UserAttemptSerializer(serializers.ModelSerializer):
-    question = QuestionSerializer()
 
     class Meta:
         model = UserAttempt
-        fields = ['uid', 'quiz_session_id', 'question', 'user_response', 'is_correct']
+        fields = ['uid', 'quiz_session_id', 'question_id', 'user_response', 'is_correct']
+        extra_kwargs = {
+            "uid": {"read_only": True},
+            "is_correct": {"read_only": True}
+        }
 
     def create(self, validated_data):
-        question_data = validated_data.pop('question')
-        question = Question.objects.get(uid=question_data['uid'])
-        user_attempt = UserAttempt.objects.create(question=question, **validated_data)
+        user_attempt = UserAttempt.objects.create(**validated_data)
         return user_attempt
     
 class UserResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserResult
         fields = ['uid', 'quiz_session_id', 'total_questions', 'questions_answered_correct', 'questions_answered_wrong']
+        read_only_fields = ('uid', 'total_questions', 'questions_answered_correct', 'questions_answered_wrong',)
