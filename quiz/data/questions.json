@@ -1,26 +1,435 @@
 [
+
     {
-        "question_text": "What is the capital of France?",
-        "option_a": "Berlin",
-        "option_b": "Madrid",
-        "option_c": "Paris",
-        "option_d": "Rome",
-        "answer": "C"
-    },
-    {
-        "question_text": "What is 2 + 2?",
-        "option_a": "3",
-        "option_b": "4",
-        "option_c": "5",
-        "option_d": "6",
-        "answer": "B"
-    },
-    {
-        "question_text": "Which programming language is known as 'JavaScript'?",
+
+        "question_text": "What is the primary language used for web development?",
+
         "option_a": "Python",
-        "option_b": "C++",
+
+        "option_b": "JavaScript",
+
         "option_c": "Java",
-        "option_d": "JavaScript",
+
+        "option_d": "C++",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which data structure uses a 'FIFO' approach?",
+
+        "option_a": "Stack",
+
+        "option_b": "Queue",
+
+        "option_c": "HashMap",
+
+        "option_d": "LinkedList",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which algorithm is known for solving the 'Shortest Path' problem?",
+
+        "option_a": "Bubble Sort",
+
+        "option_b": "Dijkstra's Algorithm",
+
+        "option_c": "Quick Sort",
+
+        "option_d": "Merge Sort",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which version control system is commonly used in teams?",
+
+        "option_a": "Git",
+
+        "option_b": "SVN",
+
+        "option_c": "Perforce",
+
+        "option_d": "Mercurial",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "Which of the following is NOT a programming language?",
+
+        "option_a": "Ruby",
+
+        "option_b": "HTML",
+
+        "option_c": "PHP",
+
+        "option_d": "Swift",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "What is the purpose of the 'async' keyword in programming?",
+
+        "option_a": "Defines synchronous behavior",
+
+        "option_b": "Indicates that a function can execute asynchronously",
+
+        "option_c": "Marks functions for multithreading",
+
+        "option_d": "Declares a constant variable",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which of these is a low-level programming language?",
+
+        "option_a": "Python",
+
+        "option_b": "C",
+
+        "option_c": "Ruby",
+
+        "option_d": "Java",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which sorting algorithm is most efficient for large datasets?",
+
+        "option_a": "Bubble Sort",
+
+        "option_b": "Heap Sort",
+
+        "option_c": "Insertion Sort",
+
+        "option_d": "Selection Sort",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "What does the acronym 'API' stand for?",
+
+        "option_a": "Application Programming Interface",
+
+        "option_b": "Advanced Programming Infrastructure",
+
+        "option_c": "Automated Process Integration",
+
+        "option_d": "Application Processing Innovation",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "Which of the following is used to handle memory in C programming?",
+
+        "option_a": "Garbage Collector",
+
+        "option_b": "Malloc",
+
+        "option_c": "Heap",
+
+        "option_d": "Reference Counter",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which of these is a front-end framework?",
+
+        "option_a": "Django",
+
+        "option_b": "React",
+
+        "option_c": "Node.js",
+
+        "option_d": "Flask",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which protocol is used for transferring files over the internet?",
+
+        "option_a": "FTP",
+
+        "option_b": "HTTP",
+
+        "option_c": "SMTP",
+
+        "option_d": "SSH",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "What is the result of 2 << 3 in binary?",
+
+        "option_a": "6",
+
+        "option_b": "4",
+
+        "option_c": "8",
+
+        "option_d": "10",
+
+        "answer": "C"
+
+    },
+
+    {
+
+        "question_text": "Which method is commonly used for string manipulation in Python?",
+
+        "option_a": "split()",
+
+        "option_b": "append()",
+
+        "option_c": "range()",
+
+        "option_d": "pop()",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "Which sorting algorithm uses a divide-and-conquer approach?",
+
+        "option_a": "Bubble Sort",
+
+        "option_b": "Merge Sort",
+
+        "option_c": "Insertion Sort",
+
+        "option_d": "Selection Sort",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "What does REST stand for in web development?",
+
+        "option_a": "Representational State Transfer",
+
+        "option_b": "Real-time Enhanced Transfer",
+
+        "option_c": "Resource State Transition",
+
+        "option_d": "Represented Security Transfer",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "Which function is used to read a file line by line in Python?",
+
+        "option_a": "open()",
+
+        "option_b": "readlines()",
+
+        "option_c": "read()",
+
+        "option_d": "close()",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which of the following is a valid data type in Java?",
+
+        "option_a": "int",
+
+        "option_b": "list",
+
+        "option_c": "set",
+
+        "option_d": "dictionary",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "What does CRUD stand for in database management?",
+
+        "option_a": "Create, Read, Update, Delete",
+
+        "option_b": "Control, Run, Use, Delete",
+
+        "option_c": "Classify, Retrieve, Unify, Declare",
+
+        "option_d": "Connect, Run, Understand, Deploy",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "Which operator is used for logical 'AND' in Python?",
+
+        "option_a": "&&",
+
+        "option_b": "AND",
+
+        "option_c": "or",
+
+        "option_d": "and",
+
         "answer": "D"
+
+    },
+
+    {
+
+        "question_text": "Which of these languages is used for Android app development?",
+
+        "option_a": "Swift",
+
+        "option_b": "Java",
+
+        "option_c": "Kotlin",
+
+        "option_d": "C#",
+
+        "answer": "C"
+
+    },
+
+    {
+
+        "question_text": "What is the use of the 'if' statement in programming?",
+
+        "option_a": "Looping through data",
+
+        "option_b": "Checking conditions",
+
+        "option_c": "Defining functions",
+
+        "option_d": "Declaring variables",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which of the following is an algorithm design technique?",
+
+        "option_a": "Binary Search",
+
+        "option_b": "Round Robin",
+
+        "option_c": "Round Table",
+
+        "option_d": "Recursive Backtracking",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "Which operator is used to access elements from a dictionary in Python?",
+
+        "option_a": ".",
+
+        "option_b": "[ ]",
+
+        "option_c": "{ }",
+
+        "option_d": "::",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "Which language is primarily used for data science and machine learning?",
+
+        "option_a": "R",
+
+        "option_b": "C#",
+
+        "option_c": "Java",
+
+        "option_d": "Go",
+
+        "answer": "A"
+
+    },
+
+    {
+
+        "question_text": "Which of these is a cloud computing service provider?",
+
+        "option_a": "IBM",
+
+        "option_b": "Azure",
+
+        "option_c": "Oracle",
+
+        "option_d": "SAP",
+
+        "answer": "B"
+
+    },
+
+    {
+
+        "question_text": "What does CSS stand for?",
+
+        "option_a": "Cascading Style Sheets",
+
+        "option_b": "Computer Style Sheets",
+
+        "option_c": "Creative Style Sheets",
+
+        "option_d": "Computer Software Sheets",
+
+        "answer": "A"
+
     }
+
 ]

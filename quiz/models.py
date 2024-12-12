@@ -86,7 +86,7 @@ class UserAttempt(BaseAbstract):
         self.is_correct = self.check_answer()
         super().save(*args, **kwargs)
     
-class UserResult(models.Model):
+class UserResult(BaseAbstract):
 
     quiz_session_id = models.ForeignKey(QuizSession, null=False, on_delete=models.CASCADE)
     total_questions = models.IntegerField()
