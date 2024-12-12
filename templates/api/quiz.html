@@ -86,6 +86,7 @@
         let currentQuestionIndex = 0;
         let questions = null;
         let selectedAnswer = null;
+        const token = localStorage.getItem('token')
     
         async function startQuiz() {
             const token = localStorage.getItem('token');
