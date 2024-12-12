@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from accounts.models import CustomUser
+import random
 
 OPTION_CHOICE = [
     ('A', 'Option A'),
@@ -24,6 +25,19 @@ class QuizSession(BaseAbstract):
     user_id = models.ForeignKey(CustomUser, null=False, on_delete=models.CASCADE)
     started_at = models.DateTimeField(auto_now_add=True)
 
+    def add_random_questions(self, question_count=10):
+        all_question_ids = Question.objects.values_list("id", flat=True)
+        selected_question_ids = random.sample(list(all_question_ids), min(question_count, len(all_question_ids)))
+
+        for question_id in selected_question_ids:
+            QuizSessionQuestion.objects.create(
+                quiz_session=self,
+                question_id=question_id
+            )
+
+    def get_questions(self):
+        return self.questions.select_related("question").all()
+
     def get_user_attempts(self):
         return UserAttempt.objects.filter(quiz_session_id=self.id)
 
@@ -42,6 +56,19 @@ class Question(BaseAbstract):
     option_d = models.TextField(null=False, blank=False)
     answer = models.CharField(max_length=1, choices=OPTION_CHOICE)
 
+class QuizSessionQuestion(BaseAbstract):
+    quiz_session_id = models.ForeignKey(QuizSession, on_delete=models.CASCADE, related_name="questions")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("quiz_session_id", "question")
+
+    @staticmethod
+    def get_questions_for_session(quiz_session):
+        """
+        Returns a list of questions for a given QuizSession.
+        """
+        return QuizSessionQuestion.objects.filter(quiz_session=quiz_session).select_related("question")
 
 class UserAttempt(BaseAbstract):
 
