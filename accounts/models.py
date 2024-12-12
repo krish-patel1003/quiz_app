@@ -5,19 +5,6 @@ from rest_framework.authtoken.models import Token
 from django.core.cache import cache
 
 
-class CustomUserQuerySet(models.QuerySet):
-
-    def all(self):
-        cache_key = 'all_users'
-        users = cache.get(cache_key)
-
-        if users is None:
-            users = list(super().all())
-            cache.set(cache_key, users, timeout=60*60*24)
-        
-        return users
-
-
 class CustomUserManager(BaseUserManager):
 
     def __create(self, username, password, **extra_fields):
@@ -41,10 +28,6 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_admin', True)
         return self.__create(username, password, **extra_fields)
-    
-
-    # def get_queryset(self):
-    #     return CustomUserQuerySet(self.model, using=self._db)
     
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
