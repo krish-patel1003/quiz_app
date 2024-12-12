@@ -16,22 +16,21 @@ class BaseAbstract(models.Model):
     created_at = models.DateField(auto_now_add = True)
     updated_at = models.DateField(auto_now = True)
     
-    
     class Meta:
         abstract = True
 
 class QuizSession(BaseAbstract):
 
-    user_id = models.ForeignKey(CustomUser, null=False, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, null=False, on_delete=models.CASCADE)
     started_at = models.DateTimeField(auto_now_add=True)
 
     def add_random_questions(self, question_count=10):
-        all_question_ids = Question.objects.values_list("id", flat=True)
+        all_question_ids = Question.objects.values_list("uid", flat=True)
         selected_question_ids = random.sample(list(all_question_ids), min(question_count, len(all_question_ids)))
 
         for question_id in selected_question_ids:
             QuizSessionQuestion.objects.create(
-                quiz_session=self,
+                quiz_session_id=self,
                 question_id=question_id
             )
 
@@ -56,6 +55,9 @@ class Question(BaseAbstract):
     option_d = models.TextField(null=False, blank=False)
     answer = models.CharField(max_length=1, choices=OPTION_CHOICE)
 
+    def __str__(self):
+        return self.question_text
+
 class QuizSessionQuestion(BaseAbstract):
     quiz_session_id = models.ForeignKey(QuizSession, on_delete=models.CASCADE, related_name="questions")
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -65,10 +67,10 @@ class QuizSessionQuestion(BaseAbstract):
 
     @staticmethod
     def get_questions_for_session(quiz_session):
-        """
-        Returns a list of questions for a given QuizSession.
-        """
-        return QuizSessionQuestion.objects.filter(quiz_session=quiz_session).select_related("question")
+        print(f"Querying QuizSessionQuestion for session: {quiz_session.uid}")
+        session_questions = QuizSessionQuestion.objects.filter(quiz_session_id=quiz_session).select_related("question").values("question")
+        return session_questions
+        
 
 class UserAttempt(BaseAbstract):
 
@@ -111,18 +113,4 @@ class UserResult(models.Model):
         self.questions_answered_correct = correct_answers
         self.questions_answered_wrong = incorrect_answers
 
-        self.save()
-            
-    
-
-
-
-
-
-
-
-
-
-
-
-    
+        self.save()    
