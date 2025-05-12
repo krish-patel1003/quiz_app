@@ -60,3 +60,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         cache.delete('all_posts')
         super().save(*args, **kwargs)
+
+
+def class New:
