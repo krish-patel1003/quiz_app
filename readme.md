@@ -1,4 +1,4 @@
-# Quiz Master Application
+# Quiz Application
 
 ## Project Description
 Quiz Master is a simple web-based quiz application that allows users to:
